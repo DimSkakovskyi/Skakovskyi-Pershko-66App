@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS pomodoro_sessions (
     session_date DATE NOT NULL
 );
 
-INSERT into users (username, email, password) VALUES
-    ('john_diccon', 'somebody@gmail.com', '!232313'),
-    ('svyat_pershko', 'svyatoslavpershko@gmail.com', '!232313'),
-    ('dima_skakovskyi', 'skak1987@gmail.com', '!232313')
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.users
+    OWNER to postgres;
