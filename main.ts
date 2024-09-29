@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 interface IUser {
     id: number;
     name: string;
