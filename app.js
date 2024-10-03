@@ -1,7 +1,13 @@
 import express from 'express';
 import { AppDataSource } from './config/ormconfig';
 
+const { Model } = require('objection');
+const knex = require('knex');
+const knexConfig = require('./knexfile');
 const app = express();
+
+const db = knex(knexConfig.development);
+Model.knex(db);
 
 AppDataSource.initialize()
   .then(() => {
