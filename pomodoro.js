@@ -1,7 +1,8 @@
 let workTime = 25 * 60; // 25 minutes in seconds
-let breakTime = 5 * 60; // 5 minutes in seconds
+let breakTime = 5 * 60;  // 5 minutes in seconds
 let timer = 0;
-let isWorkPhase = true; // Track work or break phase
+let isWorkPhase = true;  // Track if it's a work session
+let streakCount = 0;     // Track Pomodoro streaks (completed work sessions)
 let intervalId;
 
 function startTimer(duration, display) {
@@ -13,6 +14,11 @@ function startTimer(duration, display) {
     display.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
     if (--timer < 0) {
+      if (isWorkPhase) {
+        streakCount++; // Increment the streak after a work session
+      }
+      
+      // Toggle between work and break phases
       isWorkPhase = !isWorkPhase;
       timer = isWorkPhase ? workTime : breakTime;
     }
@@ -23,10 +29,12 @@ function startTimer(duration, display) {
 window.onload = () => {
   const savedTime = localStorage.getItem('remainingTime');
   const savedPhase = localStorage.getItem('isWorkPhase');
+  const savedStreakCount = localStorage.getItem('streakCount');
   
   if (savedTime) {
     timer = parseInt(savedTime);
     isWorkPhase = savedPhase === 'true';
+    streakCount = parseInt(savedStreakCount);
   } else {
     timer = workTime; // Default to work time if no saved time
   }
@@ -39,6 +47,7 @@ window.onload = () => {
 window.addEventListener('beforeunload', () => {
   localStorage.setItem('remainingTime', timer);
   localStorage.setItem('isWorkPhase', isWorkPhase);
+  localStorage.setItem('streakCount', streakCount); // Save streak count
   
   const stopTime = new Date();
   fetch('/api/pomodoro_sessions', {
@@ -48,7 +57,7 @@ window.addEventListener('beforeunload', () => {
       user_id: 1, // Replace with dynamic user ID
       work_duration: '25:00',
       break_duration: '05:00',
-      number_of_streaks: 1, // Adjust as necessary
+      number_of_streaks: streakCount, // Save the number of streaks
       stop_time: stopTime.toISOString(),
     }),
   });
