@@ -120,12 +120,19 @@ app.post('/api/habits', async (req, res) => {
   }
 });
 
+
 app.post('/api/pomodoro_sessions', async (req, res) => {
   try {
-    const { user_id, work_duration, break_duration, number_of_streaks, session_date } = req.body;
-    const newSession = await PomodoroSession.query().insert({ user_id, work_duration, break_duration, number_of_streaks, session_date });
-    res.status(201).json(newSession);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const { user_id, work_duration, break_duration, number_of_streaks, stop_time } = req.body;
+    const session = await PomodoroSession.query().insert({
+      user_id,
+      work_duration,
+      break_duration,
+      number_of_streaks,
+      session_date: stop_time, // Assuming stop_time is passed as session date
+    });
+    res.status(201).json(session);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
