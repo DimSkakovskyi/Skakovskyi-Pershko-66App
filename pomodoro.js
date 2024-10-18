@@ -1,47 +1,55 @@
-let workTime = 25 * 60;  // 25 minutes
-let breakTime = 5 * 60;  // 5 minutes
+let workTime = 25 * 60; // 25 minutes in seconds
+let breakTime = 5 * 60; // 5 minutes in seconds
+let timer = 0;
+let isWorkPhase = true; // Track work or break phase
+let intervalId;
 
 function startTimer(duration, display) {
-  let timer = duration, minutes, seconds;
-  setInterval(() => {
-    minutes = Math.floor(timer / 60);
-    seconds = timer % 60;
+  timer = duration;
+  intervalId = setInterval(() => {
+    const minutes = Math.floor(timer / 60);
+    const seconds = timer % 60;
 
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-    display.textContent = minutes + ":" + seconds;
+    display.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
     if (--timer < 0) {
-      timer = duration;
+      isWorkPhase = !isWorkPhase;
+      timer = isWorkPhase ? workTime : breakTime;
     }
   }, 1000);
 }
 
-window.addEventListener('beforeunload', () => {
-  const currentTime = timer; // Store the remaining time
-  localStorage.setItem('remainingTime', currentTime);
-  localStorage.setItem('isWorkPhase', isWorkPhase); // Save work/break phase
-});
-
+// Load state on window load
 window.onload = () => {
-  let remainingTime = localStorage.getItem('remainingTime') || workTime;
-  let isWorkPhase = JSON.parse(localStorage.getItem('isWorkPhase')) || true; // Determine phase
+  const savedTime = localStorage.getItem('remainingTime');
+  const savedPhase = localStorage.getItem('isWorkPhase');
+  
+  if (savedTime) {
+    timer = parseInt(savedTime);
+    isWorkPhase = savedPhase === 'true';
+  } else {
+    timer = workTime; // Default to work time if no saved time
+  }
 
-  startTimer(remainingTime, display, isWorkPhase);
+  const display = document.querySelector('#time'); // Assuming you have an element with id "time"
+  startTimer(timer, display);
 };
 
-window.addEventListener('beforeunload', async () => {
+// Save timer state before closing
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('remainingTime', timer);
+  localStorage.setItem('isWorkPhase', isWorkPhase);
+  
   const stopTime = new Date();
-  await fetch('/api/pomodoro_sessions', {
+  fetch('/api/pomodoro_sessions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      user_id: userId,
-      work_duration: '25:00', // Or dynamic value
+      user_id: 1, // Replace with dynamic user ID
+      work_duration: '25:00',
       break_duration: '05:00',
-      number_of_streaks: streakCount,
+      number_of_streaks: 1, // Adjust as necessary
       stop_time: stopTime.toISOString(),
     }),
   });
 });
-
-  
