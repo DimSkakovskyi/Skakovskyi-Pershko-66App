@@ -1,24 +1,27 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import RegistrationPage from './pages/RegistrationPage';
-import TodoPage from './pages/TodoPage';
-import PomodoroPage from './pages/PomodoroPage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import RegistrationForm from './RegistrationForm';
+import TodoList from './TodoList';
+import PomodoroTimer from './PomodoroTimer';
+import './App.css';
 
-function App() {
+const App = () => {
     return (
         <Router>
-            <nav>
-                <Link to="/">Register</Link> | 
-                <Link to="/todo">To-Do List</Link> | 
-                <Link to="/pomodoro">Pomodoro</Link>
-            </nav>
-            <Routes>
-                <Route path="/" element={<RegistrationPage />} />
-                <Route path="/todo" element={<TodoPage />} />
-                <Route path="/pomodoro" element={<PomodoroPage />} />
-            </Routes>
+            <div className="wrapper">
+                <nav className="navbar">
+                    <a href="/">Register</a>
+                    <a href="/todo">To-Do List</a>
+                    <a href="/pomodoro">Pomodoro Timer</a>
+                </nav>
+                <Routes>
+                    <Route path="/" element={<RegistrationForm />} />
+                    <Route path="/todo" element={<TodoList />} />
+                    <Route path="/pomodoro" element={<PomodoroTimer />} />
+                </Routes>
+            </div>
         </Router>
     );
-}
+};
 
 export default App;

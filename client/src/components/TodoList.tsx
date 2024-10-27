@@ -1,23 +1,34 @@
 import React, { useState } from 'react';
+import './App.css';
 
 const TodoList = () => {
-    const [tasks, setTasks] = useState<string[]>([]);
-    const [newTask, setNewTask] = useState('');
+    const [todos, setTodos] = useState<string[]>([]);
+    const [newTodo, setNewTodo] = useState('');
 
-    const addTask = () => {
-        setTasks([...tasks, newTask]);
-        setNewTask('');
+    const addTodo = () => {
+        if (newTodo) {
+            setTodos([...todos, newTodo]);
+            setNewTodo('');
+        }
     };
 
     return (
-        <div>
-            <input type="text" value={newTask} onChange={(e) => setNewTask(e.target.value)} />
-            <button onClick={addTask}>Add Task</button>
-            <ul>
-                {tasks.map((task, index) => (
-                    <li key={index}>{task}</li>
-                ))}
-            </ul>
+        <div className="page-content">
+            <h2 className="header">To-Do List</h2>
+            <div className="wrapper">
+                <input
+                    type="text"
+                    value={newTodo}
+                    onChange={(e) => setNewTodo(e.target.value)}
+                    placeholder="Add a new task"
+                />
+                <button onClick={addTodo}>Add Task</button>
+                <ul style={{ width: '80vw', fontSize: '3vw' }}>
+                    {todos.map((todo, index) => (
+                        <li key={index}>{todo}</li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
