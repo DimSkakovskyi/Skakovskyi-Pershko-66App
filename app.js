@@ -1,6 +1,11 @@
 import express from 'express';
 import { AppDataSource } from './config/ormconfig';
 
+const authMiddleware = require('./middleware/authMiddleware');
+app.use('/api/tasks', authMiddleware, taskRoutes);
+const jwt = require('jsonwebtoken');
+const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
 const { Model } = require('objection');
 const knex = require('knex');
 const knexConfig = require('./knexfile');
