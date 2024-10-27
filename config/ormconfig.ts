@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
-import dotenv from 'dotenv';
-
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
@@ -14,3 +13,5 @@ export const AppDataSource = new DataSource({
   logging: process.env.DB_LOGGING === 'true',
   entities: ['src/entity/**/*.ts'],
 });
+
+export default AppDataSource;

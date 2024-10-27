@@ -1,14 +1,16 @@
 import express from 'express';
-import { AppDataSource } from './config/ormconfig.js';
+import {AppDataSource} from './config/ormconfig.js';
 import 'dotenv/config';
 import authMiddleware from './middleware/authMiddleware.js';
-app.use('/api/tasks', authMiddleware, taskRoutes);
 import jwt from 'jsonwebtoken';
-const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
 import { Model } from 'objection';
 import knex from 'knex';
 import knexConfig from './knexfile.js';
+
+app.use('/api/tasks', authMiddleware, taskRoutes);
+
+const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
 const app = express();
 
 const db = knex(knexConfig.development);
