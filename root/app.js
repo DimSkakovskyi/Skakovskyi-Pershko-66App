@@ -5,7 +5,7 @@ import authMiddleware from './middleware/authMiddleware.js';
 import jwt from 'jsonwebtoken';
 import { Model } from 'objection';
 import knex from 'knex';
-import knexConfig from './knexfile.js';
+import knexConfig from '../knexfile.js';
 
 app.use('/api/tasks', authMiddleware, taskRoutes);
 
