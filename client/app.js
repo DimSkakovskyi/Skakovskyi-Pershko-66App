@@ -1,7 +1,7 @@
 import express from 'express';
-import {AppDataSource} from './config/ormconfig.js';
+import {AppDataSource} from '../root/config/ormconfig.js';
 import 'dotenv/config';
-import authMiddleware from './middleware/authMiddleware.js';
+import authMiddleware from '../root/middleware/authMiddleware.js';
 import jwt from 'jsonwebtoken';
 import { Model } from 'objection';
 import knex from 'knex';
