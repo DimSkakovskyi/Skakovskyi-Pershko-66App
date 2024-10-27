@@ -1,6 +1,6 @@
 import express from 'express';
 import { AppDataSource } from './config/ormconfig.js';
-
+import 'dotenv/config';
 import authMiddleware from './middleware/authMiddleware.js';
 app.use('/api/tasks', authMiddleware, taskRoutes);
 import jwt from 'jsonwebtoken';
