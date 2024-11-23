@@ -1,5 +1,5 @@
-const express = require('express');
-const auth = require('../middleware/auth');
+import express from 'express';
+import auth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -19,4 +19,4 @@ router.get('/admin', auth, (req, res) => {
   res.json({ message: 'Welcome, Admin!' });
 });
 
-module.exports = router;
+export default router;
