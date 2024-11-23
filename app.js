@@ -1,34 +1,38 @@
-import express from 'express';
-import {AppDataSource} from '../root/config/ormconfig.js';
 import 'dotenv/config';
-import authMiddleware from '../root/middleware/authMiddleware.js';
 import jwt from 'jsonwebtoken';
 import { Model } from 'objection';
 import knex from 'knex';
 import knexConfig from '../knexfile.js';
-
-app.use('/api/tasks', authMiddleware, taskRoutes);
-
-const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+import authMiddleware from '../root/middleware/authMiddleware.js';
+import authRoutes from './routes/auth.js';
+import protectedRoutes from './routes/protected.js';
 
 const app = express();
 
+// Initialize Knex and Objection.js
 const db = knex(knexConfig.development);
 Model.knex(db);
 
+// Initialize Data Source (if using TypeORM)
 AppDataSource.initialize()
   .then(() => {
     console.log('Database connected');
   })
   .catch((error) => console.log('Database connection error:', error));
 
-app.use(express.json());
+// Middleware
+app.use(express.json()); // Parse JSON payloads
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// Routes
+app.use('/api/auth', authRoutes); // Authentication routes (login, register)
+app.use('/api', authMiddleware, protectedRoutes); // Protected routes
+
+// Health check for the API
+app.get('/', (req, res) => {
+  res.send('API is running...');
 });
 
+// Example user routes with Objection.js
 app.get('/api/users', async (req, res) => {
   try {
     const users = await User.query();
@@ -78,6 +82,7 @@ app.delete('/api/users/:id', async (req, res) => {
   }
 });
 
+// Task routes
 app.get('/api/tasks', async (req, res) => {
   try {
     const tasks = await Task.query().withGraphFetched('user');
@@ -117,6 +122,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
   }
 });
 
+// Habit routes
 app.post('/api/habits', async (req, res) => {
   try {
     const { user_id, title, description, status } = req.body;
@@ -127,7 +133,7 @@ app.post('/api/habits', async (req, res) => {
   }
 });
 
-
+// Pomodoro Session routes
 app.post('/api/pomodoro_sessions', async (req, res) => {
   try {
     const { user_id, work_duration, break_duration, number_of_streaks, stop_time } = req.body;
@@ -136,10 +142,16 @@ app.post('/api/pomodoro_sessions', async (req, res) => {
       work_duration,
       break_duration,
       number_of_streaks,
-      session_date: stop_time, // Assuming stop_time is passed as session date
+      session_date: stop_time,
     });
     res.status(201).json(session);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
