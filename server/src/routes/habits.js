@@ -1,5 +1,5 @@
 import express from 'express';
-import Habit from '../models/Habit.js'; // Ensure the Habit model is imported
+import Habit from '../models/Habit.js';
 
 const router = express.Router();
 
