@@ -4,6 +4,15 @@ import './App.css';
 const PomodoroTimer = () => {
     const [timeLeft, setTimeLeft] = useState(25 * 60);
     const [isRunning, setIsRunning] = useState(false);
+    const progress = ((25 * 60 - timeLeft) / (25 * 60)) * 100;
+
+    const formatTime = (time: number) => {
+        const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+        const seconds = (time % 60).toString().padStart(2, '0');
+        return `${minutes}:${seconds}`;
+    };
+
+    const alarm = new Audio('/assets/alarm.mp3');
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -23,16 +32,36 @@ const PomodoroTimer = () => {
         setTimeLeft(25 * 60);
         setIsRunning(false);
     };
+    const stopTimer = () => setIsRunning(false);
+
+    const [isBreak, setIsBreak] = useState(false);
+
+    useEffect(() => {
+        if (timeLeft === 0) {
+            alarm.play();
+            if (isBreak) {
+                alert("Break over, back to work!");
+                setIsBreak(false);
+                setTimeLeft(25 * 60);
+            } else {
+                alert("Time's up! Take a break!");
+                setIsBreak(true);
+                setTimeLeft(5 * 60);
+            }
+        }
+    }, [timeLeft, isBreak]);
 
     return (
         <div className="page-content">
             <h2 className="header">Pomodoro Timer</h2>
             <div className="wrapper">
-                <p style={{ fontSize: '4vw' }}>
-                    {Math.floor(timeLeft / 60)}:{timeLeft % 60 < 10 ? '0' : ''}{timeLeft % 60}
-                </p>
-                <button onClick={startTimer}>Start</button>
-                <button onClick={resetTimer}>Reset</button>
+                <div className="progress-bar">
+                     <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                </div>
+            <p style={{ fontSize: '4vw' }}>{formatTime(timeLeft)}</p>
+            <button onClick={startTimer} disabled={isRunning}>Start</button>
+            <button onClick={resetTimer} disabled={timeLeft === 25 * 60}>Reset</button>
+            <button onClick={stopTimer}>Stop</button>
             </div>
         </div>
     );

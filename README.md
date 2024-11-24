@@ -48,3 +48,9 @@ The project is organized into client-side and server-side code:
    ```bash
    git clone https://github.com/DimSkakovskyi/Skakovskyi-Pershko-66App.git
    cd Skakovskyi-Pershko-66App
+2. Install dependencies for both client and server:
+    cd client && npm install
+    cd ../server && npm install
+3. Run the development servers:
+    cd client && npm start
+    cd ../server && npm start

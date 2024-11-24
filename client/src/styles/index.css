@@ -1,100 +1,94 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
+/* Global Styles */
 body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f5f5f5;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.page-container {
-  width: 80vw;
-  max-width: 600px;
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Utility Classes */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+.text-center {
+    text-align: center;
 }
 
-.form-container label {
-  display: block;
-  margin-bottom: 0.5rem;
+.mb-1 {
+    margin-bottom: 1rem;
 }
 
-input, button {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+/* Reusable Components */
+.card {
+    width: 80vw;
+    max-width: 600px;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Button Styles */
 button {
-  background-color: #4caf50;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #45a049;
+button.primary {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
 }
 
-.progress-list .progress-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+button.primary:hover {
+    background-color: #45a049;
 }
 
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Progress Bar */
 .progress-bar {
-  flex: 1;
-  height: 10px;
-  background: #ddd;
-  margin: 0 1rem;
-  border-radius: 5px;
-  overflow: hidden;
+    width: 100%;
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 1rem 0;
 }
 
 .progress-fill {
-  height: 100%;
-  background: #4caf50;
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
 }
 
-.timer {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+/* Component-Specific Styles */
+.page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
 }
 
-.completed {
-  text-decoration: line-through;
-  color: gray;
-}
-
-.progress-bar-wrapper {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 10px;
-  background-color: #ddd;
-  border-radius: 5px;
-  overflow: hidden;
-  margin: 0 auto 0.5rem;
-}
-
-.progress-fill {
-  height: 100%;
-  background-color: #4caf50;
-  transition: width 0.3s ease;
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
