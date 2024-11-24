@@ -2,12 +2,12 @@ import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import { Model } from 'objection';
 import knex from 'knex';
-import knexConfig from './knexfile.js';
+import knexConfig from '../config/knexfile.js';
 import authMiddleware from './middleware/authMiddleware.js';
 import authRoutes from './routes/auth.js';
 import protectedRoutes from './routes/protected.js';
 import express from 'express';
-import { AppDataSource } from './config/ormconfig.js';
+import AppDataSource from '../config/ormconfig.js';
 
 const app = express();
 
